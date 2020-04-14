@@ -74,7 +74,7 @@ async def kick(ctx, *, member : discord.Member):
 #----------------------------------------------------
 @client.command(name="ban", description="Ban member from server", pass_context=True) #!ban @someone
 async def ban(ctx, *, member : discord.Member):
-	if((ctx.message.author.id in admin_list or roles["admin"] in ctx.author.roles) and member.author.id not in admin_list):
+	if((ctx.message.author.id in admin_list or roles["admin"] in ctx.author.roles) and member.author.id not in admin_list and member.author.id != bot_id):
 		await member.ban()
 		await ctx.send(f"The user {member.mention} has been banned")
 	else:
