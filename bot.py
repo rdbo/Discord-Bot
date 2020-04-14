@@ -6,21 +6,21 @@ import os
 os_slash="\\"
 
 #Administration
-admin_list = { 0 } #List of Admin User IDs
-admin_role = 0 #Role ID for administrators
+admin_list = { 0 } #List of Admin User IDs - Put the owner and the bot IDs here
+admin_role = 0 #Set the role ID for administrators here
 permissions = 8 #Admin Integer
 
 #Variables
 cur_path = os.path.dirname(os.path.realpath(__file__))
 bot_id = None
-bot_token = ""
-server_id = 0
+bot_token = "" #Add the token here
+server_id = 0  #Add your server ID here
 
 server = None
 roles = { "admin" : None}
 
 status = discord.Game("with the API")
-invite_link = "https://discord.gg/PgfKwA"
+invite_link = "" #Add your server invite link here
 
 #Discord.py Bot
 
@@ -42,6 +42,10 @@ async def on_ready(): #Initialize
 	server = client.get_guild(server_id)
 	roles["admin"] = server.get_role(admin_role)
 	await client.change_presence(status=discord.Status.online, activity=status)
+
+@client.event
+async def on_error():
+	Log("Error!")
 
 @client.event
 async def on_message(message):
@@ -70,7 +74,7 @@ async def kick(ctx, *, member : discord.Member):
 #----------------------------------------------------
 @client.command(name="ban", description="Ban member from server", pass_context=True) #!ban @someone
 async def ban(ctx, *, member : discord.Member):
-	if(ctx.message.author.id in admin_list or roles["admin"] in ctx.author.roles):
+	if((ctx.message.author.id in admin_list or roles["admin"] in ctx.author.roles) and member.author.id not in admin_list):
 		await member.ban()
 		await ctx.send(f"The user {member.mention} has been banned")
 	else:
