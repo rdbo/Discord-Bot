@@ -66,7 +66,7 @@ async def help(ctx):
 #----------------------------------------------------
 @client.command(name="kick", description="Kick member from server", pass_context=True) #!kick @someone
 async def kick(ctx, *, member : discord.Member):
-	if(ctx.message.author.id in admin_list or roles["admin"] in ctx.author.roles):
+	if((ctx.message.author.id in admin_list or roles["admin"] in ctx.author.roles) and (not(member.id in admin_list) and admin_role not in member.roles and member.id != bot_id)):
 		await member.kick()
 		await ctx.send(f"The user {member.mention} has been kicked")
 	else:
